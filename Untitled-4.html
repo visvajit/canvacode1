@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚖️ LegalMind Academy - English Mastery Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 25%, #2d2d2d 50%, #404040 75%, #1a1a1a 100%);
+            background-attachment: fixed;
+            color: #ffffff;
+        }
+        
+        .legal-gradient { 
+            background: linear-gradient(135deg, #000000 0%, #333333 25%, #666666 50%, #333333 75%, #000000 100%);
+        }
+        
+        .legal-accent {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 50%, #ffffff 100%);
+            color: #000000;
+        }
+        
+        .law-pattern {
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.03) 10px, rgba(255,255,255,0.03) 20px),
+                repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(0,0,0,0.1) 10px, rgba(0,0,0,0.1) 20px);
+        }
+        
+        .legal-text { font-family: 'Playfair Display', serif; }
+        
+        .card-shadow { 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.1), inset 0 1px 0 rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.98);
+            border: 2px solid #000000;
+        }
+        
+        .progress-bar { 
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            background: linear-gradient(90deg, #000000, #333333, #666666, #333333, #000000);
+        }
+        
+        .law-card {
+            background: #ffffff;
+            border: 3px solid #000000;
+            box-shadow: 8px 8px 0px #000000;
+            color: #000000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .law-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 12px 12px 0px #000000;
+        }
+        
+        .question-fade { 
+            animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(30px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        .module-card {
+            background: #ffffff;
+            border: 3px solid #000000;
+            box-shadow: 6px 6px 0px #000000;
+            color: #000000;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1), transparent);
+            transition: left 0.5s;
+            z-index: 1;
+        }
+        
+        .module-card:hover::before {
+            left: 100%;
+        }
+        
+        .module-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0px #000000;
+        }
+        
+        .module-card > * {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .legal-pattern {
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(184, 134, 11, 0.1) 0%, transparent 50%);
+        }
+        
+        .scales-icon {
+            background: linear-gradient(135deg, #b8860b, #daa520);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .correct-answer {
+            background: #10b981 !important;
+            color: white !important;
+            border-color: #059669 !important;
+        }
+
+        .incorrect-answer {
+            background: #ef4444 !important;
+            color: white !important;
+            border-color: #dc2626 !important;
+        }
+
+        .disabled {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body class="min-h-screen law-pattern">
+    <!-- Header -->
+    <header class="legal-gradient border-b-4 border-white">
+        <div class="container mx-auto px-6 py-8">
+            <div class="flex items-center justify-center">
+                <div class="text-center">
+                    <h1 class="legal-text text-4xl md:text-6xl font-bold mb-2">
+                        <span class="scales-icon">⚖️</span> LegalMind Academy
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-300 font-medium">English Mastery Quiz</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <!-- Login Screen -->
+        <div id="login-screen" class="max-w-md mx-auto">
+            <div class="law-card p-8 rounded-lg">
+                <h2 class="legal-text text-3xl font-bold text-center mb-6">Login to LegalMind</h2>
+                
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Email</label>
+                        <input type="email" id="login-email" required 
+                               class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-black focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Password</label>
+                        <input type="password" id="login-password" required 
+                               class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-black focus:outline-none">
+                    </div>
+                    
+                    <button type="submit" class="w-full legal-accent py-3 rounded-lg font-bold hover:scale-105 transition-all duration-300">
+                        Login
+                    </button>
+                </form>
+                
+                <div id="login-error" class="text-red-600 text-sm mt-4 hidden"></div>
+                
+                <div class="text-center mt-6">
+                    <p class="text-sm">Don't have an account?</p>
+                    <button onclick="showRegister()" class="text-black font-semibold hover:underline">
+                        Register here
+                    </button>
+                </div>
+                
+                <div id="admin-access-section" class="text-center mt-4 hidden">
+                    <button onclick="showAdminCredentials()" class="text-xs text-gray-500 hover:text-black transition-colors duration-300">
+                        🔐 Admin Access
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Registration Screen -->
+        <div id="register-screen" class="max-w-md mx-auto hidden">
+            <div class="law-card p-8 rounded-lg">
+                <h2 class="legal-text text-3xl font-bold text-center mb-6">Join LegalMind Academy</h2>
+                
+                <form id="register-form" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Full Name</label>
+                        <input type="text" id="register-name" required 
+                               class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-black focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Email</label>
+                        <input type="email" id="register-email" required 
+                               class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-black focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Password</label>
+                        <input type="password" id="register-password" required minlength="6"
+                               class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-black focus:outline-none">
+                        <p class="text-xs text-gray-600 mt-1">Minimum 6 characters</p>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Confirm Password</label>
+                        <input type="password" id="register-confirm" required 
+                               class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-black focus:outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">Legal Experience Level</label>
+                        <select id="register-level" required 
+                                class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-black focus:outline-none">
+                            <option value="">Select your level</option>
+                            <option value="student">Law Student</option>
+                            <option value="junior">Junior Associate</option>
+                            <option value="senior">Senior Associate</option>
+                            <option value="partner">Partner</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="w-full legal-accent py-3 rounded-lg font-bold hover:scale-105 transition-all duration-300">
+                        Create Account
+                    </button>
+                </form>
+                
+                <div id="register-error" class="text-red-600 text-sm mt-4 hidden"></div>
+                
+                <div class="text-center mt-6">
+                    <p class="text-sm">Already have an account?</p>
+                    <button onclick="showLogin()" class="text-black font-semibold hover:underline">
+                        Login here
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="admin-screen" class="max-w-6xl mx-auto hidden">
+            <div class="law-card p-8 rounded-lg mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="legal-text text-3xl font-bold">Admin Dashboard</h2>
+                    <div class="text-right">
+                        <p class="text-sm font-semibold">Welcome, <span id="admin-name"></span></p>
+                        <button onclick="logout()" class="text-xs text-gray-600 hover:underline">Logout</button>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-4 gap-6 mb-8">
+                    <div class="module-card p-6 rounded-lg text-center">
+                        <div class="text-3xl mb-2">👥</div>
+                        <div class="text-2xl font-bold" id="total-users">0</div>
+                        <div class="text-sm">Total Users</div>
+                    </div>
+                    <div class="module-card p-6 rounded-lg text-center">
+                        <div class="text-3xl mb-2">📊</div>
+                        <div class="text-2xl font-bold" id="total-quiz-attempts">0</div>
+                        <div class="text-sm">Quiz Attempts</div>
+                    </div>
+                    <div class="module-card p-6 rounded-lg text-center">
+                        <div class="text-3xl mb-2">📈</div>
+                        <div class="text-2xl font-bold" id="avg-platform-score">0%</div>
+                        <div class="text-sm">Platform Average</div>
+                    </div>
+                    <div class="module-card p-6 rounded-lg text-center">
+                        <div class="text-3xl mb-2">🏆</div>
+                        <div class="text-2xl font-bold" id="top-score">0%</div>
+                        <div class="text-sm">Highest Score</div>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="module-card p-6 rounded-lg">
+                        <h3 class="font-bold text-lg mb-4">User Management</h3>
+                        <div class="space-y-2 max-h-64 overflow-y-auto" id="users-list">
+                            <!-- Users will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="module-card p-6 rounded-lg">
+                        <h3 class="font-bold text-lg mb-4">Recent Quiz Activity</h3>
+                        <div class="space-y-2 max-h-64 overflow-y-auto" id="recent-activity">
+                            <!-- Recent activity will be populated here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <button onclick="showWelcome()" class="legal-accent px-6 py-3 rounded-lg font-semibold hover:scale-105 transition-all duration-300 mr-4">
+                        Take Quiz as Admin
+                    </button>
+                    <button onclick="exportUserData()" class="law-card px-6 py-3 rounded-lg font-semibold hover:scale-105 transition-all duration-300">
+                        Export User Data
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="max-w-4xl mx-auto hidden">
+            <div class="law-card p-8 md:p-12 rounded-lg text-center mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <div></div>
+                    <h2 class="legal-text text-3xl md:text-4xl font-bold">Welcome to Legal English Mastery</h2>
+                    <div class="text-right">
+                        <p class="text-sm font-semibold" id="user-welcome">Hello, <span id="user-name"></span>!</p>
+                        <button onclick="logout()" class="text-xs text-gray-600 hover:underline">Logout</button>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-100 p-4 rounded-lg mb-6">
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-2xl font-bold" id="user-total-quizzes">0</div>
+                            <div class="text-sm">Quizzes Taken</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold" id="user-avg-score">0%</div>
+                            <div class="text-sm">Average Score</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold" id="user-best-score">0%</div>
+                            <div class="text-sm">Best Score</div>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-lg md:text-xl mb-8 leading-relaxed">
+                    Test your knowledge of legal terminology, grammar, and professional communication. 
+                    This comprehensive quiz covers essential skills for legal professionals.
+                </p>
+                
+                <div class="grid md:grid-cols-3 gap-6 mb-8">
+                    <div class="module-card p-6 rounded-lg">
+                        <div class="text-3xl mb-3">📚</div>
+                        <h3 class="font-bold text-lg mb-2">Legal Terminology</h3>
+                        <p class="text-sm">Master essential legal vocabulary and Latin phrases</p>
+                    </div>
+                    <div class="module-card p-6 rounded-lg">
+                        <div class="text-3xl mb-3">✍️</div>
+                        <h3 class="font-bold text-lg mb-2">Grammar & Style</h3>
+                        <p class="text-sm">Perfect your legal writing and communication</p>
+                    </div>
+                    <div class="module-card p-6 rounded-lg">
+                        <div class="text-3xl mb-3">⚖️</div>
+                        <h3 class="font-bold text-lg mb-2">Professional Usage</h3>
+                        <p class="text-sm">Apply knowledge in real legal contexts</p>
+                    </div>
+                </div>
+                
+                <button onclick="startQuiz()" class="legal-accent px-8 py-4 rounded-lg font-bold text-xl hover:scale-105 transition-all duration-300">
+                    Begin Assessment
+                </button>
+            </div>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="max-w-4xl mx-auto hidden">
+            <!-- Progress Bar -->
+            <div class="law-card p-6 rounded-lg mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="font-semibold">Question <span id="current-question">1</span> of <span id="total-questions">10</span></span>
+                    <span class="font-semibold">Score: <span id="current-score">0</span></span>
+                </div>
+                <div class="w-full bg-gray-300 rounded-full h-3">
+                    <div id="progress-bar" class="progress-bar h-3 rounded-full" style="width: 10%"></div>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div id="question-card" class="law-card p-8 rounded-lg mb-8 question-fade">
+                <h3 id="question-text" class="legal-text text-2xl font-bold mb-6">Loading question...</h3>
+                <div id="answers-container" class="space-y-4">
+                    <!-- Answers will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex justify-between">
+                <button id="prev-btn" onclick="previousQuestion()" class="law-card px-6 py-3 rounded-lg font-semibold hover:scale-105 transition-all duration-300 disabled:opacity-50" disabled>
+                    ← Previous
+                </button>
+                <button id="next-btn" onclick="nextQuestion()" class="legal-accent px-6 py-3 rounded-lg font-semibold hover:scale-105 transition-all duration-300" disabled>
+                    Next →
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="max-w-4xl mx-auto hidden">
+            <div class="law-card p-8 md:p-12 rounded-lg text-center">
+                <div class="text-6xl mb-6">🎓</div>
+                <h2 class="legal-text text-3xl md:text-4xl font-bold mb-6">Assessment Complete!</h2>
+                
+                <div class="bg-gray-100 p-6 rounded-lg mb-8">
+                    <div class="text-4xl font-bold mb-2" id="final-score">0/10</div>
+                    <div class="text-xl mb-4" id="score-percentage">0%</div>
+                    <div class="text-lg" id="performance-message">Keep studying!</div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="module-card p-6 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2">Strengths</h3>
+                        <ul id="strengths-list" class="text-left text-sm space-y-1">
+                            <!-- Populated by JavaScript -->
+                        </ul>
+                    </div>
+                    <div class="module-card p-6 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2">Areas for Improvement</h3>
+                        <ul id="improvements-list" class="text-left text-sm space-y-1">
+                            <!-- Populated by JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-x-4">
+                    <button onclick="restartQuiz()" class="legal-accent px-6 py-3 rounded-lg font-semibold hover:scale-105 transition-all duration-300">
+                        Retake Quiz
+                    </button>
+                    <button onclick="showWelcome()" class="law-card px-6 py-3 rounded-lg font-semibold hover:scale-105 transition-all duration-300">
+                        Back to Home
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // User management
+        let currentUser = null;
+        let users = JSON.parse(localStorage.getItem('legalMindUsers') || '{}');
+        
+        // Admin credentials (permanent)
+        const ADMIN_ACCOUNTS = {
+            'admin@legalmind.com': {
+                name: 'System Administrator',
+                email: 'admin@legalmind.com',
+                password: 'LegalAdmin2024!',
+                level: 'admin',
+                isAdmin: true,
+                quizzes: [],
+                totalQuizzes: 0,
+                bestScore: 100,
+                averageScore: 95,
+                registeredAt: '2024-01-01T00:00:00.000Z'
+            },
+            'superadmin@legalmind.com': {
+                name: 'Super Administrator',
+                email: 'superadmin@legalmind.com',
+                password: 'SuperLegal2024!',
+                level: 'superadmin',
+                isAdmin: true,
+                quizzes: [],
+                totalQuizzes: 0,
+                bestScore: 100,
+                averageScore: 98,
+                registeredAt: '2024-01-01T00:00:00.000Z'
+            },
+            'director@legalmind.com': {
+                name: 'Academy Director',
+                email: 'director@legalmind.com',
+                password: 'DirectorLegal2024!',
+                level: 'director',
+                isAdmin: true,
+                quizzes: [],
+                totalQuizzes: 0,
+                bestScore: 100,
+                averageScore: 97,
+                registeredAt: '2024-01-01T00:00:00.000Z'
+            }
+        };
+
+        // Quiz data
+        const quizData = [
+            {
+                question: "What does the Latin phrase 'habeas corpus' mean?",
+                answers: ["You have the body", "Let justice be done", "The law speaks", "By right of law"],
+                correct: 0,
+                category: "terminology"
+            },
+            {
+                question: "Which sentence demonstrates proper legal writing style?",
+                answers: [
+                    "The defendant was really guilty and should be punished.",
+                    "The evidence clearly demonstrates the defendant's culpability.",
+                    "I think the defendant did it and he's in big trouble.",
+                    "The defendant is obviously guilty as charged."
+                ],
+                correct: 1,
+                category: "grammar"
+            },
+            {
+                question: "What is a 'tort' in legal terminology?",
+                answers: ["A type of cake", "A civil wrong", "A criminal offense", "A legal document"],
+                correct: 1,
+                category: "terminology"
+            },
+            {
+                question: "Choose the correct formal legal phrase:",
+                answers: [
+                    "The court finds in favor of the plaintiff.",
+                    "The court thinks the plaintiff is right.",
+                    "The court likes the plaintiff better.",
+                    "The court agrees with the plaintiff's story."
+                ],
+                correct: 0,
+                category: "professional"
+            },
+            {
+                question: "What does 'pro bono' mean?",
+                answers: ["For the good", "For free", "For the public good", "All of the above"],
+                correct: 3,
+                category: "terminology"
+            },
+            {
+                question: "Which is the correct way to cite a legal case?",
+                answers: [
+                    "Brown vs Board of Education (1954)",
+                    "Brown v. Board of Education, 347 U.S. 483 (1954)",
+                    "Brown and Board of Education - 1954",
+                    "Brown against Board of Education in 1954"
+                ],
+                correct: 1,
+                category: "professional"
+            },
+            {
+                question: "What is the difference between 'counsel' and 'council'?",
+                answers: [
+                    "They mean the same thing",
+                    "Counsel is advice/lawyer, council is a group",
+                    "Council is advice/lawyer, counsel is a group",
+                    "There is no difference"
+                ],
+                correct: 1,
+                category: "grammar"
+            },
+            {
+                question: "What does 'amicus curiae' mean?",
+                answers: ["Friend of the court", "Enemy of the state", "Lover of justice", "Guardian of law"],
+                correct: 0,
+                category: "terminology"
+            },
+            {
+                question: "Which sentence uses proper legal conditional language?",
+                answers: [
+                    "If the defendant is guilty, he will go to jail.",
+                    "Should the defendant be found guilty, imprisonment may result.",
+                    "When the defendant gets convicted, he's going to prison.",
+                    "The defendant will definitely be imprisoned if guilty."
+                ],
+                correct: 1,
+                category: "professional"
+            },
+            {
+                question: "What is the correct plural of 'attorney'?",
+                answers: ["Attornies", "Attorneys", "Attorney's", "Attorneies"],
+                correct: 1,
+                category: "grammar"
+            }
+        ];
+
+        // Quiz state
+        let currentQuestion = 0;
+        let score = 0;
+        let userAnswers = [];
+        let selectedAnswer = null;
+
+        // Authentication functions
+        function showLogin() {
+            showScreen('login-screen');
+            document.getElementById('login-error').classList.add('hidden');
+            checkAdminAccess();
+        }
+
+        function showRegister() {
+            showScreen('register-screen');
+            document.getElementById('register-error').classList.add('hidden');
+        }
+
+        function showAdminCredentials() {
+            const credentials = `
+🔐 ADMIN CREDENTIALS
+
+System Admin:
+Email: admin@legalmind.com
+Password: LegalAdmin2024!
+
+Super Admin:
+Email: superadmin@legalmind.com
+Password: SuperLegal2024!
+
+Academy Director:
+Email: director@legalmind.com
+Password: DirectorLegal2024!
+
+Click OK to copy the first admin credentials to the login form.
+            `;
+            
+            if (confirm(credentials)) {
+                document.getElementById('login-email').value = 'admin@legalmind.com';
+                document.getElementById('login-password').value = 'LegalAdmin2024!';
+            }
+        }
+
+        function checkAdminAccess() {
+            // Show admin access button only if there are failed admin login attempts
+            // or if accessed via special key combination (Ctrl+Shift+A)
+            const adminSection = document.getElementById('admin-access-section');
+            
+            // Check for admin access flag in localStorage
+            const showAdminAccess = localStorage.getItem('showAdminAccess');
+            if (showAdminAccess === 'true') {
+                adminSection.classList.remove('hidden');
+            }
+        }
+
+        // Special key combination to reveal admin access (Ctrl+Shift+A)
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.shiftKey && e.key === 'A') {
+                localStorage.setItem('showAdminAccess', 'true');
+                const adminSection = document.getElementById('admin-access-section');
+                if (adminSection) {
+                    adminSection.classList.remove('hidden');
+                }
+            }
+        });
+
+        function register(name, email, password, level) {
+            if (users[email]) {
+                return { success: false, message: 'Email already registered' };
+            }
+
+            users[email] = {
+                name: name,
+                email: email,
+                password: password, // In real app, this would be hashed
+                level: level,
+                quizzes: [],
+                totalQuizzes: 0,
+                bestScore: 0,
+                averageScore: 0,
+                registeredAt: new Date().toISOString()
+            };
+
+            localStorage.setItem('legalMindUsers', JSON.stringify(users));
+            return { success: true };
+        }
+
+        function login(email, password) {
+            // Check admin accounts first
+            if (ADMIN_ACCOUNTS[email]) {
+                const admin = ADMIN_ACCOUNTS[email];
+                if (admin.password === password) {
+                    currentUser = admin;
+                    localStorage.setItem('currentUser', email);
+                    return { success: true, isAdmin: true };
+                }
+            }
+            
+            // Check regular users
+            const user = users[email];
+            if (!user || user.password !== password) {
+                return { success: false, message: 'Invalid email or password' };
+            }
+
+            currentUser = user;
+            localStorage.setItem('currentUser', email);
+            return { success: true, isAdmin: false };
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            showLogin();
+        }
+
+        function updateUserStats(score, totalQuestions) {
+            if (!currentUser) return;
+
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            currentUser.quizzes.push({
+                score: score,
+                total: totalQuestions,
+                percentage: percentage,
+                date: new Date().toISOString()
+            });
+
+            currentUser.totalQuizzes++;
+            currentUser.bestScore = Math.max(currentUser.bestScore, percentage);
+            
+            const totalPercentage = currentUser.quizzes.reduce((sum, quiz) => sum + quiz.percentage, 0);
+            currentUser.averageScore = Math.round(totalPercentage / currentUser.quizzes.length);
+
+            users[currentUser.email] = currentUser;
+            localStorage.setItem('legalMindUsers', JSON.stringify(users));
+        }
+
+        function loadUserStats() {
+            if (!currentUser) return;
+
+            document.getElementById('user-name').textContent = currentUser.name;
+            document.getElementById('user-total-quizzes').textContent = currentUser.totalQuizzes;
+            document.getElementById('user-avg-score').textContent = currentUser.averageScore + '%';
+            document.getElementById('user-best-score').textContent = currentUser.bestScore + '%';
+        }
+
+        function showAdminDashboard() {
+            if (!currentUser || !currentUser.isAdmin) {
+                showLogin();
+                return;
+            }
+            
+            showScreen('admin-screen');
+            loadAdminStats();
+        }
+
+        function loadAdminStats() {
+            if (!currentUser || !currentUser.isAdmin) return;
+
+            document.getElementById('admin-name').textContent = currentUser.name;
+            
+            // Calculate platform statistics
+            const allUsers = Object.values(users);
+            const totalUsers = allUsers.length;
+            let totalQuizAttempts = 0;
+            let totalScores = 0;
+            let scoreCount = 0;
+            let topScore = 0;
+
+            allUsers.forEach(user => {
+                totalQuizAttempts += user.totalQuizzes;
+                if (user.quizzes && user.quizzes.length > 0) {
+                    user.quizzes.forEach(quiz => {
+                        totalScores += quiz.percentage;
+                        scoreCount++;
+                        topScore = Math.max(topScore, quiz.percentage);
+                    });
+                }
+            });
+
+            document.getElementById('total-users').textContent = totalUsers;
+            document.getElementById('total-quiz-attempts').textContent = totalQuizAttempts;
+            document.getElementById('avg-platform-score').textContent = scoreCount > 0 ? Math.round(totalScores / scoreCount) + '%' : '0%';
+            document.getElementById('top-score').textContent = topScore + '%';
+
+            // Load users list
+            loadUsersList();
+            loadRecentActivity();
+        }
+
+        function loadUsersList() {
+            const usersList = document.getElementById('users-list');
+            usersList.innerHTML = '';
+
+            const allUsers = Object.values(users);
+            
+            if (allUsers.length === 0) {
+                usersList.innerHTML = '<p class="text-gray-500 text-sm">No users registered yet</p>';
+                return;
+            }
+
+            allUsers.forEach(user => {
+                const userDiv = document.createElement('div');
+                userDiv.className = 'flex justify-between items-center p-3 bg-gray-50 rounded border';
+                userDiv.innerHTML = `
+                    <div>
+                        <div class="font-semibold">${user.name}</div>
+                        <div class="text-sm text-gray-600">${user.email}</div>
+                        <div class="text-xs text-gray-500">${user.level} • ${user.totalQuizzes} quizzes</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm font-semibold">${user.bestScore}%</div>
+                        <div class="text-xs text-gray-500">Best Score</div>
+                    </div>
+                `;
+                usersList.appendChild(userDiv);
+            });
+        }
+
+        function loadRecentActivity() {
+            const activityList = document.getElementById('recent-activity');
+            activityList.innerHTML = '';
+
+            const allQuizzes = [];
+            Object.values(users).forEach(user => {
+                if (user.quizzes && user.quizzes.length > 0) {
+                    user.quizzes.forEach(quiz => {
+                        allQuizzes.push({
+                            userName: user.name,
+                            userEmail: user.email,
+                            score: quiz.score,
+                            total: quiz.total,
+                            percentage: quiz.percentage,
+                            date: new Date(quiz.date)
+                        });
+                    });
+                }
+            });
+
+            // Sort by date (most recent first)
+            allQuizzes.sort((a, b) => b.date - a.date);
+
+            if (allQuizzes.length === 0) {
+                activityList.innerHTML = '<p class="text-gray-500 text-sm">No quiz activity yet</p>';
+                return;
+            }
+
+            // Show last 10 activities
+            allQuizzes.slice(0, 10).forEach(activity => {
+                const activityDiv = document.createElement('div');
+                activityDiv.className = 'flex justify-between items-center p-3 bg-gray-50 rounded border';
+                
+                const timeAgo = getTimeAgo(activity.date);
+                
+                activityDiv.innerHTML = `
+                    <div>
+                        <div class="font-semibold">${activity.userName}</div>
+                        <div class="text-sm text-gray-600">Scored ${activity.score}/${activity.total} (${activity.percentage}%)</div>
+                        <div class="text-xs text-gray-500">${timeAgo}</div>
+                    </div>
+                    <div class="text-2xl">
+                        ${activity.percentage >= 80 ? '🏆' : activity.percentage >= 60 ? '👍' : '📚'}
+                    </div>
+                `;
+                activityList.appendChild(activityDiv);
+            });
+        }
+
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMs / 3600000);
+            const diffDays = Math.floor(diffMs / 86400000);
+
+            if (diffMins < 1) return 'Just now';
+            if (diffMins < 60) return `${diffMins} minutes ago`;
+            if (diffHours < 24) return `${diffHours} hours ago`;
+            if (diffDays < 7) return `${diffDays} days ago`;
+            return date.toLocaleDateString();
+        }
+
+        function exportUserData() {
+            if (!currentUser || !currentUser.isAdmin) return;
+
+            const exportData = {
+                exportDate: new Date().toISOString(),
+                exportedBy: currentUser.name,
+                totalUsers: Object.keys(users).length,
+                users: users
+            };
+
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `legalmind-users-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+        }
+
+        // Screen management
+        function showScreen(screenId) {
+            document.querySelectorAll('[id$="-screen"]').forEach(screen => {
+                screen.classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+
+        function showWelcome() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+            
+            // If admin, show admin dashboard by default
+            if (currentUser.isAdmin) {
+                showAdminDashboard();
+                return;
+            }
+            
+            showScreen('welcome-screen');
+            loadUserStats();
+        }
+
+        function startQuiz() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            selectedAnswer = null;
+            showScreen('quiz-screen');
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const question = quizData[currentQuestion];
+            
+            // Update progress
+            document.getElementById('current-question').textContent = currentQuestion + 1;
+            document.getElementById('total-questions').textContent = quizData.length;
+            document.getElementById('current-score').textContent = score;
+            
+            const progressPercent = ((currentQuestion + 1) / quizData.length) * 100;
+            document.getElementById('progress-bar').style.width = progressPercent + '%';
+            
+            // Display question
+            document.getElementById('question-text').textContent = question.question;
+            
+            // Display answers
+            const answersContainer = document.getElementById('answers-container');
+            answersContainer.innerHTML = '';
+            
+            question.answers.forEach((answer, index) => {
+                const answerButton = document.createElement('button');
+                answerButton.className = 'law-card p-4 rounded-lg text-left hover:scale-102 transition-all duration-300 w-full';
+                answerButton.textContent = answer;
+                answerButton.onclick = () => selectAnswer(index);
+                answersContainer.appendChild(answerButton);
+            });
+            
+            // Update navigation buttons
+            document.getElementById('prev-btn').disabled = currentQuestion === 0;
+            document.getElementById('next-btn').disabled = true;
+            
+            selectedAnswer = null;
+            
+            // Add fade animation
+            document.getElementById('question-card').classList.remove('question-fade');
+            setTimeout(() => {
+                document.getElementById('question-card').classList.add('question-fade');
+            }, 50);
+        }
+
+        function selectAnswer(answerIndex) {
+            selectedAnswer = answerIndex;
+            
+            // Remove previous selections
+            document.querySelectorAll('#answers-container button').forEach(btn => {
+                btn.classList.remove('correct-answer', 'incorrect-answer', 'disabled');
+            });
+            
+            // Show correct/incorrect
+            const buttons = document.querySelectorAll('#answers-container button');
+            const correctIndex = quizData[currentQuestion].correct;
+            
+            buttons[correctIndex].classList.add('correct-answer');
+            
+            if (answerIndex !== correctIndex) {
+                buttons[answerIndex].classList.add('incorrect-answer');
+            }
+            
+            // Disable all buttons
+            buttons.forEach(btn => btn.classList.add('disabled'));
+            
+            // Update score
+            if (answerIndex === correctIndex) {
+                score++;
+                document.getElementById('current-score').textContent = score;
+            }
+            
+            // Store answer
+            userAnswers[currentQuestion] = answerIndex;
+            
+            // Enable next button
+            document.getElementById('next-btn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (selectedAnswer === null) return;
+            
+            currentQuestion++;
+            
+            if (currentQuestion >= quizData.length) {
+                showResults();
+            } else {
+                displayQuestion();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                displayQuestion();
+                
+                // If user had selected an answer, show it
+                if (userAnswers[currentQuestion] !== undefined) {
+                    selectAnswer(userAnswers[currentQuestion]);
+                }
+            }
+        }
+
+        function showResults() {
+            showScreen('results-screen');
+            
+            const percentage = Math.round((score / quizData.length) * 100);
+            
+            // Update user stats
+            updateUserStats(score, quizData.length);
+            
+            document.getElementById('final-score').textContent = `${score}/${quizData.length}`;
+            document.getElementById('score-percentage').textContent = `${percentage}%`;
+            
+            // Performance message
+            let message = "";
+            if (percentage >= 90) message = "Outstanding! You have mastered legal English.";
+            else if (percentage >= 80) message = "Excellent work! You have strong legal English skills.";
+            else if (percentage >= 70) message = "Good job! Continue practicing to improve.";
+            else if (percentage >= 60) message = "Fair performance. Focus on weak areas.";
+            else message = "Keep studying! Practice makes perfect.";
+            
+            document.getElementById('performance-message').textContent = message;
+            
+            // Analyze strengths and weaknesses
+            const categories = { terminology: 0, grammar: 0, professional: 0 };
+            const categoryTotals = { terminology: 0, grammar: 0, professional: 0 };
+            
+            quizData.forEach((question, index) => {
+                categoryTotals[question.category]++;
+                if (userAnswers[index] === question.correct) {
+                    categories[question.category]++;
+                }
+            });
+            
+            const strengthsList = document.getElementById('strengths-list');
+            const improvementsList = document.getElementById('improvements-list');
+            
+            strengthsList.innerHTML = '';
+            improvementsList.innerHTML = '';
+            
+            Object.keys(categories).forEach(category => {
+                const score = categories[category];
+                const total = categoryTotals[category];
+                const percent = Math.round((score / total) * 100);
+                
+                const categoryNames = {
+                    terminology: 'Legal Terminology',
+                    grammar: 'Grammar & Style',
+                    professional: 'Professional Usage'
+                };
+                
+                const li = document.createElement('li');
+                li.textContent = `${categoryNames[category]}: ${score}/${total} (${percent}%)`;
+                
+                if (percent >= 70) {
+                    strengthsList.appendChild(li);
+                } else {
+                    improvementsList.appendChild(li);
+                }
+            });
+            
+            if (strengthsList.children.length === 0) {
+                strengthsList.innerHTML = '<li>Focus on all areas for improvement</li>';
+            }
+            
+            if (improvementsList.children.length === 0) {
+                improvementsList.innerHTML = '<li>Excellent performance across all categories!</li>';
+            }
+        }
+
+        function restartQuiz() {
+            startQuiz();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                // Check admin accounts first
+                if (ADMIN_ACCOUNTS[savedUser]) {
+                    currentUser = ADMIN_ACCOUNTS[savedUser];
+                    showAdminDashboard();
+                    return;
+                }
+                // Check regular users
+                if (users[savedUser]) {
+                    currentUser = users[savedUser];
+                    showWelcome();
+                    return;
+                }
+            }
+            showLogin();
+
+            // Login form handler
+            document.getElementById('login-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                const result = login(email, password);
+                
+                if (result.success) {
+                    if (result.isAdmin) {
+                        showAdminDashboard();
+                    } else {
+                        showWelcome();
+                    }
+                } else {
+                    const errorDiv = document.getElementById('login-error');
+                    errorDiv.textContent = result.message;
+                    errorDiv.classList.remove('hidden');
+                }
+            });
+
+            // Registration form handler
+            document.getElementById('register-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('register-name').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                const confirmPassword = document.getElementById('register-confirm').value;
+                const level = document.getElementById('register-level').value;
+                
+                const errorDiv = document.getElementById('register-error');
+                
+                if (password !== confirmPassword) {
+                    errorDiv.textContent = 'Passwords do not match';
+                    errorDiv.classList.remove('hidden');
+                    return;
+                }
+                
+                if (password.length < 6) {
+                    errorDiv.textContent = 'Password must be at least 6 characters';
+                    errorDiv.classList.remove('hidden');
+                    return;
+                }
+                
+                const result = register(name, email, password, level);
+                
+                if (result.success) {
+                    // Auto-login after registration
+                    login(email, password);
+                    showWelcome();
+                } else {
+                    errorDiv.textContent = result.message;
+                    errorDiv.classList.remove('hidden');
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96f9260007173a1a',t:'MTc1NTI2NTY5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
